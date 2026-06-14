@@ -1,44 +1,55 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
+    setMenuOpen(false);
     navigate('/');
   };
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <nav>
       <div className="nav-container">
         <div className="nav-left">
-          <Link to="/" className="nav-logo">
+          <Link to="/" className="nav-logo" onClick={closeMenu}>
             <span className="logo-icon">🏁</span>
             <span className="logo-text">TechHelp Hub</span>
           </Link>
-          <ul className="nav-links">
+          <button
+            className="nav-toggle"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle navigation"
+            aria-expanded={menuOpen}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+          <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
             <li>
-              <Link to="/questions">Questions</Link>
+              <NavLink to="/questions" onClick={closeMenu} end>
+                Questions
+              </NavLink>
             </li>
-            {isAuthenticated && (
-              <>
-                <li>
-                  <Link to="/users">Users</Link>
-                </li>
-                <li>
-                  <Link to="/items">Items</Link>
-                </li>
-              </>
-            )}
+            <li>
+              <NavLink to="/users" onClick={closeMenu}>
+                Community
+              </NavLink>
+            </li>
           </ul>
         </div>
-        <div className="nav-right">
+        <div className={`nav-right ${menuOpen ? 'open' : ''}`}>
           {isAuthenticated ? (
             <>
-              <Link to="/ask" className="btn btn-ask">
+              <Link to="/ask" className="btn btn-ask" onClick={closeMenu}>
                 Ask Question
               </Link>
               <span className="user-info">
@@ -52,10 +63,10 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="btn btn-secondary">
+              <Link to="/login" className="btn btn-secondary" onClick={closeMenu}>
                 Login
               </Link>
-              <Link to="/register" className="btn btn-primary">
+              <Link to="/register" className="btn btn-primary" onClick={closeMenu}>
                 Register
               </Link>
             </>

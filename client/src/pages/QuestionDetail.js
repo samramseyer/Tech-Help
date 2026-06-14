@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getQuestion, getAnswers, createAnswer, voteQuestion, voteAnswer, acceptAnswer, deleteQuestion, deleteAnswer } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { timeAgo } from '../utils/formatDate';
 
 const QuestionDetail = () => {
   const { id } = useParams();
@@ -184,7 +185,7 @@ const QuestionDetail = () => {
 
           <div className="question-meta">
             <span>Asked by <strong>{question.author?.username || 'Anonymous'}</strong></span>
-            <span>{new Date(question.createdAt).toLocaleDateString()}</span>
+            <span>{timeAgo(question.createdAt)}</span>
             <span>{question.views} views</span>
           </div>
 
@@ -261,7 +262,7 @@ const QuestionDetail = () => {
                   <div className="author-card">
                     <span>Answered by <strong>{answer.author?.username || 'Anonymous'}</strong></span>
                     <span className="reputation">⭐ {answer.author?.reputation || 0}</span>
-                    <span className="date">{new Date(answer.createdAt).toLocaleDateString()}</span>
+                    <span className="date">{timeAgo(answer.createdAt)}</span>
                   </div>
 
                   {isAnswerOwner && (

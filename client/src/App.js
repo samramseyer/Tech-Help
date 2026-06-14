@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -20,7 +21,7 @@ function App() {
       <Router>
         <div className="App">
           <Navbar />
-          <div className="container">
+          <main className="container">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
@@ -33,7 +34,8 @@ function App() {
               <Route path="/items" element={<Items />} />
               <Route path="/items/create" element={<CreateItem />} />
             </Routes>
-          </div>
+          </main>
+          <Footer />
         </div>
       </Router>
     </AuthProvider>
